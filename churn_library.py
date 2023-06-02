@@ -202,6 +202,7 @@ def classification_report_image(y_train,
              'fontsize': 10}, fontproperties='monospace')  # approach improved by OP -> monospace!
     plt.axis('off')
     plt.savefig(fname='./images/results/logistic_regression_train_metric.png')
+    plt.close()
 
     # Random Forest Classification Report and save figure
     plt.rc('figure', figsize=(5, 5))
@@ -215,7 +216,8 @@ def classification_report_image(y_train,
              'fontsize': 10}, fontproperties='monospace')  # approach improved by OP -> monospace!
     plt.axis('off')
     plt.savefig(fname='./images/results/random_forest_train_metric.png')
-
+    plt.close()
+    
     return None
 
 
