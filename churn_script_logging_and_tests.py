@@ -170,7 +170,7 @@ def test_train_models(train_models):
 
         train_models(X_train, X_test, y_train, y_test)
 
-        image_output_list = ['roc_curve.png',
+        image_output_list = ['roc_curve_lrc.png', 'roc_curve_rfc.png',
                              'logistic_regression_train_metric.png',
                              'random_forest_train_metric.png',
                              'feature_importances.png']

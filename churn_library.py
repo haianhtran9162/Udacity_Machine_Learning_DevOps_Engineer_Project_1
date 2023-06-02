@@ -53,16 +53,19 @@ def perform_eda(dataframe):
     plt.figure(figsize=(20, 10))
     df['Churn'].hist()
     plt.savefig(fname='./images/eda/churn_distribution.png')
+    plt.close()
 
     # EDA Customer_Age and save figure
     plt.figure(figsize=(20, 10))
     df['Customer_Age'].hist()
     plt.savefig(fname='./images/eda/customer_age_distribution.png')
+    plt.close()
 
     # EDA Marital_Status and save figure
     plt.figure(figsize=(20, 10))
     df.Marital_Status.value_counts('normalize').plot(kind='bar')
     plt.savefig(fname='./images/eda/marital_status_distribution.png')
+    plt.close()
 
     # EDA Total_Trans_Ct and save figure
     plt.figure(figsize=(20, 10))
@@ -71,11 +74,13 @@ def perform_eda(dataframe):
     # using a kernel density estimate
     sns.histplot(df['Total_Trans_Ct'], stat='density', kde=True)
     plt.savefig(fname='./images/eda/total_transaction_distribution.png')
+    plt.close()
 
     # Headmap of correlation matrix and save figure
     plt.figure(figsize=(20, 10))
     sns.heatmap(df.corr(), annot=False, cmap='Dark2_r', linewidths=2)
     plt.savefig(fname='./images/eda/heatmap.png')
+    plt.close()
 
     return None
 
@@ -190,7 +195,7 @@ def classification_report_image(y_train,
                 None
     '''
     # Logistic Regression Classification Report and save figure
-    plt.rc('figure', figsize=(5, 5))
+    plt.rc('figure', figsize=(6, 6))
     # plt.text(0.01, 0.05, str(model.summary()), {'fontsize': 12}) old approach
     plt.text(0.01, 1.25, str('Random Forest Train'), {
              'fontsize': 10}, fontproperties='monospace')
@@ -205,7 +210,7 @@ def classification_report_image(y_train,
     plt.close()
 
     # Random Forest Classification Report and save figure
-    plt.rc('figure', figsize=(5, 5))
+    plt.rc('figure', figsize=(6, 6))
     plt.text(0.01, 1.25, str('Logistic Regression Train'),
              {'fontsize': 10}, fontproperties='monospace')
     plt.text(0.01, 0.05, str(classification_report(y_train, y_train_preds_lr)), {
@@ -256,6 +261,7 @@ def feature_importance_plot(model, X_data, output_pth):
 
     # Save the image
     plt.savefig(fname=output_pth + 'feature_importances.png')
+    plt.close()
 
     return None
 
@@ -302,19 +308,6 @@ def train_models(X_train, X_test, y_train, y_test):
     joblib.dump(cv_rfc.best_estimator_, './models/rfc_model.pkl')
     joblib.dump(lrc, './models/lrc_model.pkl')
 
-    # ROC Curve and save figure
-    plt.figure(figsize=(15, 8))
-    ax = plt.gca()
-    lrc_plot = plot_roc_curve(lrc, X_test, y_test)
-    lrc_plot.plot(ax=ax, alpha=0.8)
-    rfc_disp = plot_roc_curve(
-        cv_rfc.best_estimator_,
-        X_test,
-        y_test,
-        ax=ax,
-        alpha=0.8)
-    plt.savefig(fname='./images/results/roc_curve.png')
-
     # Classification Report and save figure
     classification_report_image(
         y_train,
@@ -326,6 +319,26 @@ def train_models(X_train, X_test, y_train, y_test):
 
     # Feature Importance Plot and save figure
     feature_importance_plot(cv_rfc, X_test, './images/results/')
+    
+    # ROC Curve and save figure
+    plt.figure(figsize=(15, 8))
+    ax = plt.gca()
+    lrc_plot = plot_roc_curve(lrc, X_test, y_test)
+    lrc_plot.plot(ax=ax, alpha=0.8)
+    plt.savefig(fname='./images/results/roc_curve_lrc.png')
+    plt.close()
+    
+    plt.figure(figsize=(15, 8))
+    ax = plt.gca()
+    rfc_disp = plot_roc_curve(
+        cv_rfc.best_estimator_,
+        X_test,
+        y_test,
+        ax=ax,
+        alpha=0.8)
+    rfc_disp.plot(ax=ax, alpha=0.8)
+    plt.savefig(fname='./images/results/roc_curve_rfc.png')
+    plt.close()
 
 
 if __name__ == '__main__':
